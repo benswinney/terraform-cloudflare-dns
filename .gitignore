@@ -1,8 +1,12 @@
 # Terraform files
 *.tfstate
 *.tfstate.*
+*.tfstate.backup
 .terraform/
 .terraform.lock.hcl
+**/.terraform.lock.hcl.backup
+**/terraform.tfplan
+**/terraform.tfplan.json
 
 # Variable files containing sensitive information
 *.tfvars
@@ -34,6 +38,7 @@ CLAUDE.md
 *.log
 crash.log
 crash.*.log
+terraform.log
 
 # Override files
 override.tf
@@ -43,3 +48,16 @@ override.tf.json
 
 # Include example files
 !*.tfvars.example
+
+# Terraform provider cache
+.terraform.d/
+**/.terraform.d/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp

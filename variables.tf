@@ -7,6 +7,11 @@ variable "cloudflare_api_token" {
 variable "zone_id" {
   description = "The DNS zone ID where the records will be created"
   type        = string
+
+  validation {
+    condition     = can(regex("^[a-f0-9]{32}$", var.zone_id))
+    error_message = "Zone ID must be a valid 32-character hexadecimal string."
+  }
 }
 
 variable "dns_records" {
@@ -14,7 +19,7 @@ variable "dns_records" {
   type = map(object({
     name    = string
     type    = string
-    value   = string
+    content = string
     ttl     = optional(number)
     proxied = optional(bool)
     comment = optional(string)
@@ -31,6 +36,20 @@ variable "dns_records" {
 
   validation {
     condition = alltrue([
+      for k, v in var.dns_records : v.name != null && v.name != ""
+    ])
+    error_message = "DNS record name cannot be null or empty."
+  }
+
+  validation {
+    condition = alltrue([
+      for k, v in var.dns_records : v.content != null && v.content != ""
+    ])
+    error_message = "DNS record content cannot be null or empty."
+  }
+
+  validation {
+    condition = alltrue([
       for k, v in var.dns_records : v.ttl == null || (v.ttl >= 1 && v.ttl <= 86400)
     ])
     error_message = "TTL must be between 1 and 86400 seconds, or null for automatic."
@@ -41,10 +60,10 @@ variable "default_ttl" {
   description = "Default TTL for records that don't specify one (1 = automatic)"
   type        = number
   default     = 1
-  
+
   validation {
     condition     = var.default_ttl >= 1 && var.default_ttl <= 86400
-    error_message = "Default TTL must be between 1 and 86400 seconds."
+    error_message = "Default TTL must be between 1 and 86400 seconds (1 = automatic)."
   }
 }
 

@@ -43,7 +43,7 @@ dns_records = {
   "www" = {
     name    = "www"
     type    = "A"
-    value   = "203.0.113.1"
+    content = "203.0.113.1"
     ttl     = 300
     proxied = true
     comment = "Main website"
@@ -52,7 +52,7 @@ dns_records = {
   "api" = {
     name    = "api"
     type    = "A"
-    value   = "203.0.113.2"
+    content = "203.0.113.2"
     proxied = true
     comment = "API endpoint"
   }
@@ -60,7 +60,7 @@ dns_records = {
   "blog" = {
     name    = "blog"
     type    = "CNAME"
-    value   = "blog.example.dev"
+    content = "blog.example.dev"
     proxied = false
     comment = "Blog subdomain"
   }
@@ -118,7 +118,7 @@ Each record in the `dns_records` map supports these properties:
 |----------|----------|-------------|---------|
 | `name` | ✅ | DNS record name | `"www"`, `"api"`, `"@"` |
 | `type` | ✅ | DNS record type | `"A"`, `"CNAME"`, `"MX"`, etc. |
-| `value` | ✅ | Record target value | `"192.0.2.1"`, `"example.com"` |
+| `content` | ✅ | Record target content | `"192.0.2.1"`, `"example.com"` |
 | `ttl` | ❌ | Time to live in seconds | `300`, `3600` |
 | `proxied` | ❌ | Enable Cloudflare proxy | `true`, `false` |
 | `comment` | ❌ | Record description | `"Main website"` |
@@ -139,7 +139,7 @@ dns_records = {
   "www" = {
     name    = "www"
     type    = "A"
-    value   = "203.0.113.1"
+    content = "203.0.113.1"
     ttl     = 300
     proxied = true
     comment = "Main website"
@@ -148,7 +148,7 @@ dns_records = {
   "root" = {
     name    = "@"
     type    = "A"
-    value   = "203.0.113.1"
+    content = "203.0.113.1"
     ttl     = 300
     proxied = true
     comment = "Root domain"
@@ -158,7 +158,7 @@ dns_records = {
   "api" = {
     name    = "api"
     type    = "A"
-    value   = "203.0.113.2"
+    content = "203.0.113.2"
     proxied = true
     comment = "API endpoint"
   }
@@ -166,7 +166,7 @@ dns_records = {
   "blog" = {
     name    = "blog"
     type    = "CNAME"
-    value   = "blog.example.dev"
+    content = "blog.example.dev"
     proxied = false
     comment = "Blog subdomain"
   }
@@ -175,14 +175,14 @@ dns_records = {
   "mail-mx" = {
     name    = "@"
     type    = "MX"
-    value   = "10 mail.example.com"
+    content = "10 mail.example.com"
     comment = "Primary mail server"
   }
   
   "mail-mx-backup" = {
     name    = "@"
     type    = "MX"
-    value   = "20 backup.mail.example.com"
+    content = "20 backup.mail.example.com"
     comment = "Backup mail server"
   }
   
@@ -190,14 +190,14 @@ dns_records = {
   "spf" = {
     name    = "@"
     type    = "TXT"
-    value   = "v=spf1 include:_spf.google.com ~all"
+    content = "v=spf1 include:_spf.google.com ~all"
     comment = "SPF record"
   }
   
   "dmarc" = {
     name    = "_dmarc"
     type    = "TXT"
-    value   = "v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com"
+    content = "v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com"
     comment = "DMARC policy"
   }
   
@@ -205,7 +205,7 @@ dns_records = {
   "ftp" = {
     name  = "ftp"
     type  = "CNAME"
-    value = "ftp.provider.com"
+    content = "ftp.provider.com"
     comment = "FTP service"
   }
 }
@@ -219,7 +219,7 @@ dns_records = {
   "www" = {
     name    = "www"
     type    = "A"
-    value   = "203.0.113.1"
+    content = "203.0.113.1"
     proxied = true
   }
 }
@@ -231,7 +231,7 @@ dns_records = {
   "blog" = {
     name    = "blog"
     type    = "CNAME"
-    value   = "my-blog.example.dev"
+    content = "my-blog.example.dev"
     proxied = false
   }
 }
@@ -243,7 +243,7 @@ dns_records = {
   "mail" = {
     name  = "@"
     type  = "MX"
-    value = "10 mail.example.com"
+    content = "10 mail.example.com"
   }
 }
 ```
@@ -254,7 +254,7 @@ dns_records = {
   "spf" = {
     name  = "@"
     type  = "TXT"
-    value = "v=spf1 include:_spf.google.com ~all"
+    content = "v=spf1 include:_spf.google.com ~all"
   }
 }
 ```
@@ -268,22 +268,22 @@ The new scalable design makes it easy to manage many DNS records:
 ```hcl
 dns_records = {
   # Production web services
-  "www"     = { name = "www", type = "A", value = "203.0.113.1", proxied = true }
-  "api"     = { name = "api", type = "A", value = "203.0.113.2", proxied = true }
-  "admin"   = { name = "admin", type = "A", value = "203.0.113.3", proxied = true }
+  "www"     = { name = "www", type = "A", content = "203.0.113.1", proxied = true }
+  "api"     = { name = "api", type = "A", content = "203.0.113.2", proxied = true }
+  "admin"   = { name = "admin", type = "A", content = "203.0.113.3", proxied = true }
   
   # Development services
-  "dev-www" = { name = "dev-www", type = "A", value = "203.0.113.10", proxied = false }
-  "dev-api" = { name = "dev-api", type = "A", value = "203.0.113.11", proxied = false }
+  "dev-www" = { name = "dev-www", type = "A", content = "203.0.113.10", proxied = false }
+  "dev-api" = { name = "dev-api", type = "A", content = "203.0.113.11", proxied = false }
   
   # Mail and security
-  "mail"    = { name = "@", type = "MX", value = "10 mail.example.com" }
-  "spf"     = { name = "@", type = "TXT", value = "v=spf1 include:_spf.google.com ~all" }
-  "dkim"    = { name = "selector1._domainkey", type = "TXT", value = "v=DKIM1; k=rsa; p=..." }
+  "mail"    = { name = "@", type = "MX", content = "10 mail.example.com" }
+  "spf"     = { name = "@", type = "TXT", content = "v=spf1 include:_spf.google.com ~all" }
+  "dkim"    = { name = "selector1._domainkey", type = "TXT", content = "v=DKIM1; k=rsa; p=..." }
   
   # CDN and services
-  "cdn"     = { name = "cdn", type = "CNAME", value = "cdn.provider.com", proxied = false }
-  "ftp"     = { name = "ftp", type = "CNAME", value = "ftp.provider.com" }
+  "cdn"     = { name = "cdn", type = "CNAME", content = "cdn.provider.com", proxied = false }
+  "ftp"     = { name = "ftp", type = "CNAME", content = "ftp.provider.com" }
 }
 ```
 

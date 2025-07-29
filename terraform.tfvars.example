@@ -32,7 +32,7 @@ dns_records = {
   "root" = {
     name    = "@"                    # @ represents the root domain
     type    = "A"                    # IPv4 address record
-    value   = "203.0.113.1"          # Your server's IP address
+    content = "203.0.113.1"          # Your server's IP address
     ttl     = 300                    # 5 minutes cache time
     proxied = true                   # Enable Cloudflare proxy (DDoS protection, SSL, etc.)
     comment = "Root domain - main website"
@@ -42,7 +42,7 @@ dns_records = {
   "www" = {
     name    = "www"
     type    = "A"
-    value   = "203.0.113.1"          # Same IP as root, or different if needed
+    content = "203.0.113.1"          # Same IP as root, or different if needed
     ttl     = 300
     proxied = true                   # Recommended for web traffic
     comment = "WWW subdomain"
@@ -56,7 +56,7 @@ dns_records = {
   "api" = {
     name    = "api"
     type    = "A"
-    value   = "203.0.113.2"          # Your API server IP
+    content = "203.0.113.2"          # Your API server IP
     ttl     = 300
     proxied = true                   # Protects API from attacks
     comment = "API endpoint"
@@ -66,7 +66,7 @@ dns_records = {
   "admin" = {
     name    = "admin"
     type    = "A"
-    value   = "203.0.113.3"          # Admin server IP
+    content = "203.0.113.3"          # Admin server IP
     ttl     = 300
     proxied = false                  # May want direct access for admin
     comment = "Admin panel"
@@ -76,7 +76,7 @@ dns_records = {
   "blog" = {
     name    = "blog"
     type    = "CNAME"                # Points to another domain
-    value   = "my-blog.ghost.io"     # External blog service
+    content = "my-blog.ghost.io"     # External blog service
     proxied = false                  # External services often don't work with proxy
     comment = "Blog hosted externally"
   }
@@ -89,7 +89,7 @@ dns_records = {
   "dev" = {
     name    = "dev"
     type    = "A"
-    value   = "203.0.113.10"         # Dev server IP
+    content = "203.0.113.10"         # Dev server IP
     ttl     = 60                     # Shorter TTL for frequent changes
     proxied = false                  # Development usually doesn't need proxy
     comment = "Development environment"
@@ -99,7 +99,7 @@ dns_records = {
   "staging" = {
     name    = "staging"
     type    = "A"
-    value   = "203.0.113.11"         # Staging server IP
+    content = "203.0.113.11"         # Staging server IP
     ttl     = 300
     proxied = false
     comment = "Staging environment"
@@ -113,7 +113,7 @@ dns_records = {
   "mail-primary" = {
     name    = "@"                    # Mail for root domain
     type    = "MX"                   # Mail exchange record
-    value   = "10 mail.example.com"  # Priority 10, mail server hostname
+    content = "10 mail.example.com"  # Priority 10, mail server hostname
     ttl     = 3600                   # Longer TTL for mail (1 hour)
     comment = "Primary mail server"
   }
@@ -122,7 +122,7 @@ dns_records = {
   "mail-backup" = {
     name    = "@"
     type    = "MX"
-    value   = "20 backup.mail.example.com"  # Priority 20 (higher = lower priority)
+    content = "20 backup.mail.example.com"  # Priority 20 (higher = lower priority)
     ttl     = 3600
     comment = "Backup mail server"
   }
@@ -131,7 +131,7 @@ dns_records = {
   "mail-server" = {
     name    = "mail"
     type    = "A"
-    value   = "203.0.113.20"         # Mail server IP
+    content = "203.0.113.20"         # Mail server IP
     ttl     = 3600
     proxied = false                  # Mail servers should not be proxied
     comment = "Mail server IP"
@@ -145,7 +145,7 @@ dns_records = {
   "spf" = {
     name    = "@"
     type    = "TXT"
-    value   = "v=spf1 include:_spf.google.com include:mail.example.com ~all"
+    content = "v=spf1 include:_spf.google.com include:mail.example.com ~all"
     ttl     = 3600
     comment = "SPF record - authorized mail servers"
   }
@@ -154,7 +154,7 @@ dns_records = {
   "dmarc" = {
     name    = "_dmarc"
     type    = "TXT"
-    value   = "v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com; ruf=mailto:dmarc-failures@example.com"
+    content = "v=DMARC1; p=quarantine; rua=mailto:dmarc-reports@example.com; ruf=mailto:dmarc-failures@example.com"
     ttl     = 3600
     comment = "DMARC policy - email authentication"
   }
@@ -163,7 +163,7 @@ dns_records = {
   "dkim" = {
     name    = "selector1._domainkey"  # Replace 'selector1' with your actual DKIM selector
     type    = "TXT"
-    value   = "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."  # Your actual DKIM public key
+    content = "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."  # Your actual DKIM public key
     ttl     = 3600
     comment = "DKIM public key for email signing"
   }
@@ -176,7 +176,7 @@ dns_records = {
   "ftp" = {
     name    = "ftp"
     type    = "A"
-    value   = "203.0.113.30"         # FTP server IP
+    content = "203.0.113.30"         # FTP server IP
     ttl     = 3600
     proxied = false                  # FTP should not be proxied
     comment = "FTP server"
@@ -186,7 +186,7 @@ dns_records = {
   "cdn" = {
     name    = "cdn"
     type    = "CNAME"
-    value   = "cdn.provider.com"     # External CDN service
+    content = "cdn.provider.com"     # External CDN service
     proxied = false                  # External CDN, don't double-proxy
     comment = "CDN for static assets"
   }
@@ -195,7 +195,7 @@ dns_records = {
   "db" = {
     name    = "db"
     type    = "A"
-    value   = "203.0.113.40"         # Database server IP
+    content = "203.0.113.40"         # Database server IP
     ttl     = 3600
     proxied = false                  # Database should not be proxied
     comment = "Database server - internal use"
@@ -209,7 +209,7 @@ dns_records = {
   "google-verification" = {
     name    = "@"
     type    = "TXT"
-    value   = "google-site-verification=your-verification-code-here"
+    content = "google-site-verification=your-verification-code-here"
     ttl     = 3600
     comment = "Google Search Console verification"
   }
@@ -218,7 +218,7 @@ dns_records = {
   "domain-verification" = {
     name    = "@"
     type    = "TXT"
-    value   = "your-service-verification-code-here"
+    content = "your-service-verification-code-here"
     ttl     = 3600
     comment = "Service domain verification"
   }
@@ -231,7 +231,7 @@ dns_records = {
   "wildcard" = {
     name    = "*"
     type    = "A"
-    value   = "203.0.113.1"          # Default IP for undefined subdomains
+    content = "203.0.113.1"          # Default IP for undefined subdomains
     ttl     = 300
     proxied = true
     comment = "Wildcard - catches undefined subdomains"
@@ -241,7 +241,7 @@ dns_records = {
   "srv-example" = {
     name    = "_sip._tcp"             # Service and protocol
     type    = "SRV"
-    value   = "10 5 5060 sip.example.com"  # Priority Weight Port Target
+    content = "10 5 5060 sip.example.com"  # Priority Weight Port Target
     ttl     = 3600
     comment = "SRV record for SIP service"
   }
@@ -250,7 +250,7 @@ dns_records = {
   "caa" = {
     name    = "@"
     type    = "CAA"
-    value   = "0 issue \"letsencrypt.org\""  # Only Let's Encrypt can issue certs
+    content = "0 issue \"letsencrypt.org\""  # Only Let's Encrypt can issue certs
     ttl     = 3600
     comment = "CAA record - certificate authority authorization"
   }
@@ -291,7 +291,7 @@ default_proxied = false
 # 2. REQUIRED PROPERTIES:
 #    - name: The record name/subdomain
 #    - type: The DNS record type
-#    - value: The record value/target
+#    - content: The record value/target
 #
 # 3. OPTIONAL PROPERTIES:
 #    - ttl: Time to live in seconds (uses default_ttl if not specified)

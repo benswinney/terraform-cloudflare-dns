@@ -5,7 +5,7 @@ terraform {
       version = "~> 4.0"
     }
   }
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.3.0" # Updated for optional() support
 }
 
 # Configure the Cloudflare provider
@@ -19,35 +19,18 @@ resource "cloudflare_record" "dns_records" {
 
   zone_id = var.zone_id
   name    = each.value.name
-  value   = each.value.value
+  content = each.value.content
   type    = each.value.type
-  ttl     = lookup(each.value, "ttl", var.default_ttl)
-  proxied = lookup(each.value, "proxied", var.default_proxied)
-  
+  ttl     = each.value.ttl != null ? each.value.ttl : var.default_ttl
+  proxied = each.value.proxied != null ? each.value.proxied : var.default_proxied
+
   # Optional comment for record identification
-  comment = lookup(each.value, "comment", "Managed by Terraform")
-}
+  comment = each.value.comment != null ? each.value.comment : "Managed by Terraform"
 
-# Output all created record details
-output "dns_record_details" {
-  description = "Details of all created DNS records"
-  value = {
-    for key, record in cloudflare_record.dns_records : key => {
-      id       = record.id
-      hostname = record.hostname
-      name     = record.name
-      type     = record.type
-      value    = record.value
-      ttl      = record.ttl
-      proxied  = record.proxied
-    }
+  # Lifecycle management to prevent accidental deletion
+  lifecycle {
+    prevent_destroy       = false # Set to true for production environments
+    create_before_destroy = true
   }
 }
 
-# Output record IDs for reference
-output "dns_record_ids" {
-  description = "Map of record keys to their IDs"
-  value = {
-    for key, record in cloudflare_record.dns_records : key => record.id
-  }
-}
